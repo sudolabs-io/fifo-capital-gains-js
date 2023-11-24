@@ -1,13 +1,14 @@
 {
   "name": "@selmecir/fifo-capital-gains-js",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Calculate your FIFO capital gains for tax-purposes with BigNumber.js",
   "keywords": [
     "finance",
     "capital gains",
     "fifo"
   ],
-  "main": "./esm5/index.js",
+  "main": "./bundles/index.umd.js",
+  "module": "./esm5/index.js",
   "es2015": "./esm2015/index.js",
   "typings": "./types/index.d.ts",
   "sideEffects": false,
@@ -23,7 +24,7 @@
   },
   "scripts": {
     "prebuild": "npm run verify",
-    "build": "tsc && tsc --target es2018 --outDir dist/esm2015 && rollup -c config/rollup.config.js && rollup -c config/rollup.config.js --environment NODE_ENV:production",
+    "build": "tsc && tsc --target es2018 --outDir dist/esm2015 && rollup -c config/rollup.config.js --bundleConfigAsCjs && rollup -c config/rollup.config.js --bundleConfigAsCjs --environment NODE_ENV:production",
     "postbuild": "node scripts/copy && npm run size",
     "test": "jest",
     "test:watch": "npm t -- --watch",
