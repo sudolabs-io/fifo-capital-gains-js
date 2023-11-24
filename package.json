@@ -1,7 +1,7 @@
 {
   "name": "fifo-capital-gains-js",
-  "version": "0.1.1",
-  "description": "Calculate your FIFO capital gains for tax-purposes",
+  "version": "0.2.0",
+  "description": "Calculate your FIFO capital gains for tax-purposes with BigNumber.js",
   "keywords": [
     "finance",
     "capital gains",
@@ -14,9 +14,9 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/bernardobelchior/fifo-capital-gains-js"
+    "url": "https://github.com/sudolabs-tb/fifo-capital-gains-js"
   },
-  "author": "Bernardo Belchior <bernardo.belchior1@gmail.com>",
+  "author": "Bernardo Belchior <bernardo.belchior1@gmail.com> & Roman Selmeci <romanselmeci@sudolab.io>",
   "license": "MIT",
   "engines": {
     "node": ">=8.5",
@@ -72,7 +72,9 @@
   "peerDependencies": {
     "tslib": ">=1.9.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bignumber.js": "9.1.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
@@ -109,7 +111,7 @@
     "tslint-config-standard": "^9.0.0",
     "tslint-etc": "^1.10.1",
     "typescript": "^3.9.0",
-    "typescript-tslint-plugin": "^0.5.5",
+    "typescript-tslint-plugin": "^1.0.2",
     "webpack-config-utils": "^2.3.1"
   },
   "jest": {

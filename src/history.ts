@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { Operation } from '.'
 
 /**
@@ -20,15 +21,15 @@ export function consolidateHistory(history: Operation[]): Operation[] {
       if (operation.type === 'BUY' && operation.symbol === symbol) {
         _history[i] = {
           ...operation,
-          amount: Math.max(0, operation.amount - amount),
+          amount: BigNumber.max(0, operation.amount.minus(amount)),
         }
         _history[index] = {
           ..._history[index],
-          amount: amount - Math.min(operation.amount, amount),
+          amount: amount.minus(BigNumber.min(operation.amount, amount)),
         }
       }
     }
   })
 
-  return _history.filter(({ amount }) => amount > 0)
+  return _history.filter(({ amount }) => amount.gt(0))
 }

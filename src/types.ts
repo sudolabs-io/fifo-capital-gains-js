@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 export interface Operation {
   /**
    * Symbol that identifies the underlying security. It is used only for differentation between
@@ -16,12 +18,12 @@ export interface Operation {
    * If it is a buy operation, this is the buying price; if a sell operation,
    * then this is the selling price.
    */
-  price: number
+  price: BigNumber
 
   /**
    * Number of units transacted.
    */
-  amount: number
+  amount: BigNumber
 
   /**
    * Type of the operation

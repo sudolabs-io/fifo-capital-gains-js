@@ -1,4 +1,7 @@
+/* tslint:disable:no-magic-numbers */
+import BigNumber from "bignumber.js";
 import { aggregateByYear } from '../aggregations'
+
 
 describe('aggregateByYear calculates the aggregation correctly', () => {
   it('when there is only one operation', () => {
@@ -6,17 +9,17 @@ describe('aggregateByYear calculates the aggregation correctly', () => {
       aggregateByYear([
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2020-03-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 1250,
+          capitalGains: BigNumber(1250),
         },
       ])
     ).toEqual({
-      2020: 1250,
+      2020: BigNumber(1250),
     })
   })
 
@@ -25,39 +28,39 @@ describe('aggregateByYear calculates the aggregation correctly', () => {
       aggregateByYear([
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2020-03-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 500,
+          capitalGains: BigNumber(500),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2021-01-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 500,
+          capitalGains: BigNumber(500),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2022-06-07'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 300,
+          capitalGains: BigNumber(300),
         },
       ])
     ).toEqual({
-      2020: 500,
-      2021: 500,
-      2022: 300,
+      2020: BigNumber(500),
+      2021: BigNumber(500),
+      2022: BigNumber(300),
     })
   })
 
@@ -66,49 +69,49 @@ describe('aggregateByYear calculates the aggregation correctly', () => {
       aggregateByYear([
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2020-03-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 500,
+          capitalGains: BigNumber(500),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2021-01-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 500,
+          capitalGains: BigNumber(500),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2021-04-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 700,
+          capitalGains: BigNumber(700),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2022-06-07'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 300,
+          capitalGains: BigNumber(300),
         },
       ])
     ).toEqual({
-      2020: 500,
-      2021: 1200,
-      2022: 300,
+      2020: BigNumber(500),
+      2021: BigNumber(1200),
+      2022: BigNumber(300),
     })
   })
 
@@ -117,38 +120,38 @@ describe('aggregateByYear calculates the aggregation correctly', () => {
       aggregateByYear([
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2020-03-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: -500,
+          capitalGains: BigNumber(-500),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2020-06-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 300,
+          capitalGains: BigNumber(300),
         },
         {
           sale: {
-            amount: 1,
+            amount: BigNumber(1),
             date: new Date('2021-01-01'),
-            price: 2000,
+            price: BigNumber(2000),
             symbol: 'STK1',
             type: 'SELL',
           },
-          capitalGains: 500,
+          capitalGains: BigNumber(500),
         },
       ])
     ).toEqual({
-      2020: -200,
-      2021: 500,
+      2020:BigNumber(-200),
+      2021: BigNumber(500),
     })
   })
 })

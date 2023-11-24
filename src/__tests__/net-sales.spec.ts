@@ -1,37 +1,40 @@
+/* tslint:disable:no-magic-numbers */
+import BigNumber from "bignumber.js";
 import { Operation } from '..'
 import { calculateSalesForNetWithdrawal, NetSalesOptions } from '../net-sales'
+
 
 describe('calculateSalesForNetWithdrawal', () => {
   it('calculates sale correctly when there are only purchases in the history', () => {
     const history: Operation[] = [
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2020-01-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'BUY',
       },
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2021-01-01'),
-        price: 200,
+        price: BigNumber(200),
         symbol: 'STK1',
         type: 'BUY',
       },
     ]
 
     const options: NetSalesOptions = {
-      netWithdrawal: 4000,
-      capitalGainsTax: 0.5,
+      netWithdrawal: BigNumber(4000),
+      capitalGainsTax: BigNumber(0.5),
       date: new Date('2022-01-01'),
-      prices: { STK1: 300 },
+      prices: { STK1: BigNumber(300) },
     }
 
     expect(calculateSalesForNetWithdrawal(history, options)).toEqual([
       {
-        amount: 18,
+        amount: BigNumber(18),
         date: new Date('2022-01-01'),
-        price: 300,
+        price: BigNumber(300),
         symbol: 'STK1',
         type: 'SELL',
       },
@@ -41,40 +44,40 @@ describe('calculateSalesForNetWithdrawal', () => {
   it('calculates sale correctly when there are purchases and sales in the history', () => {
     const history: Operation[] = [
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2020-01-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'BUY',
       },
       {
-        amount: 5,
+        amount: BigNumber(5),
         date: new Date('2020-06-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'SELL',
       },
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2021-01-01'),
-        price: 200,
+        price: BigNumber(200),
         symbol: 'STK1',
         type: 'BUY',
       },
     ]
 
     const options: NetSalesOptions = {
-      netWithdrawal: 3000,
-      capitalGainsTax: 0.5,
+      netWithdrawal: BigNumber(3000),
+      capitalGainsTax: BigNumber(0.5),
       date: new Date('2022-01-01'),
-      prices: { STK1: 300 },
+      prices: { STK1: BigNumber(300) },
     }
 
     expect(calculateSalesForNetWithdrawal(history, options)).toEqual([
       {
-        amount: 13,
+        amount: BigNumber(13),
         date: new Date('2022-01-01'),
-        price: 300,
+        price: BigNumber(300),
         symbol: 'STK1',
         type: 'SELL',
       },
@@ -84,26 +87,26 @@ describe('calculateSalesForNetWithdrawal', () => {
   it('calculates sale correctly when there are not enough buys', () => {
     const history: Operation[] = [
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2020-01-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'BUY',
       },
     ]
 
     const options: NetSalesOptions = {
-      netWithdrawal: 2000,
-      capitalGainsTax: 0.5,
+      netWithdrawal: BigNumber(2000),
+      capitalGainsTax: BigNumber(0.5),
       date: new Date('2020-03-01'),
-      prices: { STK1: 200 },
+      prices: { STK1: BigNumber(200) },
     }
 
     expect(calculateSalesForNetWithdrawal(history, options)).toEqual([
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2020-03-01'),
-        price: 200,
+        price: BigNumber(200),
         symbol: 'STK1',
         type: 'SELL',
       },
@@ -113,26 +116,26 @@ describe('calculateSalesForNetWithdrawal', () => {
   it('does not apply capital gains tax when there are negative capital gains', () => {
     const history: Operation[] = [
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2020-01-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'BUY',
       },
     ]
 
     const options: NetSalesOptions = {
-      netWithdrawal: 400,
-      capitalGainsTax: 0.5,
+      netWithdrawal: BigNumber(400),
+      capitalGainsTax: BigNumber(0.5),
       date: new Date('2020-03-01'),
-      prices: { STK1: 50 },
+      prices: { STK1: BigNumber(50) },
     }
 
     expect(calculateSalesForNetWithdrawal(history, options)).toEqual([
       {
-        amount: 8,
+        amount: BigNumber(8),
         date: new Date('2020-03-01'),
-        price: 50,
+        price: BigNumber(50),
         symbol: 'STK1',
         type: 'SELL',
       },
@@ -142,47 +145,47 @@ describe('calculateSalesForNetWithdrawal', () => {
   it('calculates sales correctly when multiple symbols exist', () => {
     const history: Operation[] = [
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2020-01-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'BUY',
       },
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2021-01-01'),
-        price: 200,
+        price: BigNumber(200),
         symbol: 'STK2',
         type: 'BUY',
       },
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2021-01-01'),
-        price: 200,
+        price: BigNumber(200),
         symbol: 'STK1',
         type: 'BUY',
       },
     ]
 
     const options: NetSalesOptions = {
-      netWithdrawal: 4000,
-      capitalGainsTax: 0.5,
+      netWithdrawal: BigNumber(4000),
+      capitalGainsTax: BigNumber(0.5),
       date: new Date('2022-01-01'),
-      prices: { STK1: 300, STK2: 600 },
+      prices: { STK1: BigNumber(300), STK2: BigNumber(600) },
     }
 
     expect(calculateSalesForNetWithdrawal(history, options)).toEqual([
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2022-01-01'),
-        price: 300,
+        price: BigNumber(300),
         symbol: 'STK1',
         type: 'SELL',
       },
       {
-        amount: 5,
+        amount: BigNumber(5),
         date: new Date('2022-01-01'),
-        price: 600,
+        price: BigNumber(600),
         symbol: 'STK2',
         type: 'SELL',
       },
@@ -192,33 +195,33 @@ describe('calculateSalesForNetWithdrawal', () => {
   it('ignores purchases that are more recent than the sale date', () => {
     const history: Operation[] = [
       {
-        amount: 5,
+        amount: BigNumber(5),
         date: new Date('2020-01-01'),
-        price: 100,
+        price: BigNumber(100),
         symbol: 'STK1',
         type: 'BUY',
       },
       {
-        amount: 10,
+        amount: BigNumber(10),
         date: new Date('2021-01-01'),
-        price: 200,
+        price: BigNumber(200),
         symbol: 'STK1',
         type: 'BUY',
       },
     ]
 
     const options: NetSalesOptions = {
-      netWithdrawal: 3000,
-      capitalGainsTax: 0.5,
+      netWithdrawal: BigNumber(3000),
+      capitalGainsTax: BigNumber(0.5),
       date: new Date('2020-03-01'),
-      prices: { STK1: 300 },
+      prices: { STK1: BigNumber(300) },
     }
 
     expect(calculateSalesForNetWithdrawal(history, options)).toEqual([
       {
-        amount: 5,
+        amount: BigNumber(5),
         date: new Date('2020-03-01'),
-        price: 300,
+        price: BigNumber(300),
         symbol: 'STK1',
         type: 'SELL',
       },

@@ -1,15 +1,17 @@
+import BigNumber from "bignumber.js";
 import { Operation } from '.'
 import { consolidateHistory } from './history'
 
+
 export interface NetSalesOptions {
   /** Net amount to withdraw */
-  netWithdrawal: number
+  netWithdrawal: BigNumber
   /** Tax applied to capital gains obtained from selling securities */
-  capitalGainsTax: number
+  capitalGainsTax: BigNumber
   /** Date of the selling operation(s) */
   date: Date
   /** Security prices at the time of sale. Map of security symbol to price. */
-  prices: Record<string, number>
+  prices: Record<string, BigNumber>
 }
 
 /**
@@ -33,27 +35,26 @@ export function calculateSalesForNetWithdrawal(
 
   const consolidatedHistory = consolidateHistory(history)
 
-  let currentWithdrawal = 0
+  let currentWithdrawal = BigNumber(0)
   let i = 0
   while (currentWithdrawal < netWithdrawal && i < consolidatedHistory.length) {
     const op = consolidatedHistory[i]
     if (op.type === 'BUY' && op.date < date) {
       const price = prices[op.symbol]
       const capitalGainsPerShare =
-        price - op.price < 0
-          ? price - op.price
-          : (price - op.price) * (1 - capitalGainsTax)
-      const netGainsPerShare = capitalGainsPerShare + op.price
-
-      const amount = Math.min(
-        (netWithdrawal - currentWithdrawal) / netGainsPerShare,
+        price.minus(op.price).lt(0)
+          ? price.minus(op.price)
+          : price.minus(op.price).multipliedBy(BigNumber(1).minus(capitalGainsTax))
+      const netGainsPerShare = capitalGainsPerShare.plus(op.price)
+      const amount = BigNumber.min(
+        netWithdrawal.minus(currentWithdrawal).div(netGainsPerShare),
         op.amount
       )
-      currentWithdrawal += amount * netGainsPerShare
+      currentWithdrawal = currentWithdrawal.plus(amount.multipliedBy(netGainsPerShare))
       const key = getHashKey({ symbol: op.symbol, date, type: 'SELL' })
       operations[key] = {
         type: 'SELL',
-        amount: amount + (operations[key] ? operations[key].amount : 0),
+        amount: amount.plus(operations[key] ? operations[key].amount : 0),
         price,
         date,
         symbol: op.symbol,

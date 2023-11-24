@@ -1,4 +1,6 @@
+import BigNumber from "bignumber.js";
 import { Operation } from '.'
+
 
 export interface CapitalGains {
   /**
@@ -9,7 +11,7 @@ export interface CapitalGains {
   /**
    * Capital gains triggered from the sale
    */
-  capitalGains: number
+  capitalGains: BigNumber
 }
 
 /**
@@ -46,7 +48,7 @@ function calculateCapitalGainsForSale(
   operationHistory: Operation[],
   sale: Operation
 ): CapitalGains {
-  let capitalGains = 0
+  let capitalGains = BigNumber(0)
   const saleCopy = { ...sale }
 
   operationHistory
@@ -55,14 +57,14 @@ function calculateCapitalGainsForSale(
         type === 'BUY' && symbol === sale.symbol && date < sale.date
     )
     .forEach((buy) => {
-      const amountSold = Math.min(sale.amount, buy.amount)
+      const amountSold = BigNumber.min(sale.amount, buy.amount)
 
-      buy.amount -= amountSold
-      sale.amount -= amountSold
-      capitalGains += amountSold * (sale.price - buy.price)
+      buy.amount = buy.amount.minus(amountSold)
+      sale.amount = sale.amount.minus(amountSold)
+      capitalGains = capitalGains.plus(amountSold.multipliedBy(sale.price.minus(buy.price)))
     })
 
-  if (sale.amount > 0) {
+  if (sale.amount.gt(0)) {
     throw Error(
       `Amount of sales for symbol ${sale.symbol} exceeds the amount of buys.`
     )
