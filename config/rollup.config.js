@@ -77,7 +77,7 @@ const plugins = /** @type {Plugin[]} */ ([
 const CommonConfig = {
   input: {},
   output: {},
-  inlineDynamicImports: true,
+  //inlineDynamicImports: true,
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external,
 }
