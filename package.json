@@ -1,5 +1,5 @@
 {
-  "name": "fifo-capital-gains-js",
+  "name": "@selmecir/fifo-capital-gains-js",
   "version": "0.2.0",
   "description": "Calculate your FIFO capital gains for tax-purposes with BigNumber.js",
   "keywords": [
